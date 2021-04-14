@@ -1,0 +1,125 @@
+*{
+    /* outine:1px solid red; */
+}
+#addMeal{
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
+#addCat{
+    width:200px!important;
+    background-color: rgb(52,58,64);
+    border-top:3px solid rgb(170,212,0);;
+    margin-right: 10px;
+    text-align: center;
+}
+#addCat label{
+    margin:20px 0 20px 0;
+}
+
+
+.meals aside:first-child label img{
+    margin-right: 20px;
+}
+.meals ul{
+    padding-left: 0;
+    margin-left: 0;
+}
+.mealViewer input[type=submit]{
+    width: 100px;
+    margin: auto;
+}
+.mealEdit h3{
+    width: 150px!important;
+}
+.mealEdit h3 input:first-child{
+    text-align: center;
+}
+.mealEdit h3 input,.mealEdit h3 label{
+    width: 150px;
+}
+.mealEdit h3 input{
+    margin-bottom: 19px;
+    height: 25px;
+    font-size: 25px;
+}
+
+.mealEdit h3 p{
+    float: right;
+    width: fit-content;
+    font-size: 15px;
+}
+.mealEdit h3 input:last-child{
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.mealViewer div input[type=text],.mealViewer div label{
+    font-size: 10px;
+    text-align: center; 
+    /* here */
+    width: 150px;
+}
+.mealViewer div input[type=text]:nth-child(3){
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    text-align: left;
+    display: block;
+}
+.mealViewer div P:last-child{
+    float: right;
+    font-family: 'Times New Roman', Times, serif;
+    margin-top: 13px;
+}
+.mealViewer div input[type=text]:last-child{
+    font-size: 17px;
+}
+
+form.mealViewer aside nav:last-child input:first-child{
+    background-color: white ;
+    width: 50px;
+    color: rgb(61, 61, 61);
+    height: 25px;
+}
+form.mealViewer aside > p:nth-child(2) textarea{
+    width: 100%;
+    min-height: 100px;
+}
+
+
+form.mealViewer aside nav:last-child select{
+    color: rgb(158,203,255);
+    background-color: rgb(52,58,64);
+    font-family: 'Courgette', cursive;
+    margin: auto ;
+    text-align: center;
+    border-top:3px solid rgb(170,212,0);;
+
+}
+form.mealViewer aside nav button{
+    align-items: center;
+    background-color: rgb(170,212,0);
+    border-color: rgb(228,225,200);
+    border:2px solid ;
+    color:white;
+    display: flex;
+    font-weight: 800;
+    height: 30px;
+    margin-right: 20px;
+    text-decoration: none;
+}
+form.mealViewer aside nav button:hover{
+    background-color:red; 
+}
+
+#addMeal aside > p:first-child{
+    font-family: 'Langar', cursive;
+    font-weight: bold;
+    font-size: larger;
+    margin: 10px 125px 0 0;
+    width: 200px;
+    float: right
+}
+#addMeal form{
+    width: 70%;
+}

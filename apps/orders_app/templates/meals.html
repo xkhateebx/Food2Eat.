@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- load Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        {%load static%}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/meals.css' %}">
+        <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+        <link href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Condensed&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Langar&display=swap" rel="stylesheet">
+      
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <title>Food2Eat Meals</title>
+    </head>
+<body>
+<!-- NAVBAR-->
+{%include 'navbar.html' %}
+<!-- start of meals app -->
+{%load getValue%}
+  <section class='meals'>
+    <!-- start of filters div -->
+    <aside>
+         
+    </aside>
+      <!-- end of filters div -->
+    <!-- start of meals stocks div -->
+    <aside>
+        <!-- meals viewer template -->
+        {%for meal in meals %}
+        <section>
+          <form class='mealViewer' id = 'form_{{meal.id}}' {%if meal.id not in orderedMealsIds%} action="{%url 'addToCart' %}"{%else%} action="{%url 'removeFromCart' %}"{%endif%}method='post' >
+            {% csrf_token %}
+            <h3>{{meal.title}}<img src='{{meal.imgLink|getImage}}' alt="meal image"></h3>
+            <aside>
+              <img src="{{meal.category.iconLink|getImage}}" alt="icon">
+                <p>{{meal.description}}</p>
+                <nav>
+                  <p>{{meal.price}} NIS</p>
+                    
+                    <select name='quantity'  id='quantity_{{meal.id}}'>
+                      {% for i in '0123456789' %}
+                      {%with quantity=quantities|getValue:meal.id%}
+                      <option {% if quantity|stringformat:'s' == i %} selected {%endif%}>{{ forloop.counter }}</option>
+                      {%endwith%}
+                        {% endfor %}
+                    </select>
+                    <input type=hidden name='meal_id' value='{{meal.id}}'>
+                    {%if meal.id not in orderedMealsIds%}
+                    <input type='submit' id = 'submit_{{meal.id}}' value='Add'>
+                    {%else%}
+                    <input type='submit' id = 'submit_{{meal.id}}' value='Remove' style='background-color: red;'>
+                    {%endif%}
+                  <p>{{meal.restaurant.name}}</p>
+                </nav>  
+            </aside>
+          </form>  
+        </section>
+        {%endfor%}
+        <!-- end of meals viewer template -->  
+    </aside>
+      <!-- end of meals stocks div -->
+
+  </section>
+  <script>
+    $('select').change(function (e) {
+    e.preventDefault()
+    $.ajax({
+      url: 'change_order_quantity/'+$(this).attr('id').replace('quantity_',''),
+      method: 'post',
+      data: {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,'quantity':$(this).val()},
+      success: function(serverResponse){
+      }
+     })
+    })
+    // $('#yourcheckbox').change(function() {
+
+    //     console.log(111111111)
+    // });
+
+    $('form').submit(function(e){
+    e.preventDefault()
+    $.ajax({
+      url: $(this).attr('action').replace('/meals/',''),
+      method: 'post',
+      data: $(this).serialize(),
+      success: function(serverResponse){
+        $("#form_"+serverResponse['id'].toString()).attr('action',serverResponse['action']);
+        $("#submit_"+serverResponse['id'].toString()).css('background-color',serverResponse['color']);
+        $("#submit_"+serverResponse['id'].toString()).attr('value',serverResponse['value']);
+      }
+    })
+    
+  })
+  </script>
+  <!-- end of meals app -->
+{%include 'footer.html' %}
+
+</body>
+</html>
